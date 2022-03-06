@@ -16,6 +16,10 @@
         <servlet-name>KindergartenController</servlet-name>
         <servlet-class>controller.kindergarten.KindergartenController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DetailKindergartenController</servlet-name>
+        <servlet-class>controller.kindergarten.DetailKindergartenController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginController</servlet-name>
         <url-pattern>/login</url-pattern>
@@ -31,6 +35,10 @@
     <servlet-mapping>
         <servlet-name>KindergartenController</servlet-name>
         <url-pattern>/kindergarten</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DetailKindergartenController</servlet-name>
+        <url-pattern>/kindergarten/detail</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

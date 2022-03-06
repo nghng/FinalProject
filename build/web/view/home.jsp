@@ -52,13 +52,17 @@
                         <td></td>
                         <td id="searchbox"><input type="submit" value="Tìm"></td>
                     </tr>
+                    <tr>
+                        <td><input type="checkbox" value="1" name="searchAll" id="searchAll"></td>
+                        <td><label for="searchAll"> Liệt kê tất cả </label></td>
+                    </tr>
                 </table>
             </form>
         </div>
-        
+
         <div class="footer" style="width: 100%;">
             <p>Liên lạc: hunglengoc2109@gmail.com</p>
         </div>
-        
+
     </body>
 </html>

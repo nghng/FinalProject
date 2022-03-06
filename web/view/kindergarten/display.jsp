@@ -19,9 +19,14 @@
         <title>JSP Page</title>
         <link href='http://fonts.googleapis.com/css?family=Cookie' rel='stylesheet' type='text/css'>
         <link href="css/home/header-basic.css" rel="stylesheet" type="text/css"/>
-        <link href="css/home/home.css" rel="stylesheet" type="text/css"/>
+        <link href="css/display/display.css" rel="stylesheet" type="text/css"/>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-      
+        <script src="js/kindergarten/kindergarten.js" type="text/javascript"></script>
+     
+        <%
+            Integer pageindex = (Integer) request.getAttribute("pageindex");
+            Integer totalpage = (Integer) request.getAttribute("totalpage");
+        %>
     </head>
     <header class="header-basic">
 
@@ -43,16 +48,31 @@
 
     <body>
 
+        <c:choose>
+            <c:when test="${requestScope.kindergartens.size() gt 0}">
+                <c:forEach items="${requestScope.kindergartens}" var="k">
+                    <div>
+                        <a href="kindergarten/detail?kid=${k.kid}">Trường mầm non ${k.kname}</a>
+                        <p>Mã Trường: ${k.kid} </p>
 
-        
+                    </div>
+                </c:forEach>
+            </c:when>
+            <c:otherwise>
+                <div>Không tồn tại bản ghi này</div>
+                <a href="home">Quay về trang tìm kiếm</a>
+            </c:otherwise>
+        </c:choose>
+        <div id="containerbot" class="pagger">  </div>
+        <c:if test="${requestScope.pageindex != null && requestScope.totalpage != null }">  
 
-        <c:forEach items="${requestScope.kindergartens}" var="k">
-            <div>
-                <a>Trường mầm non ${k.kname}</a>
-                <p>Mã Trường: ${k.kid} </p>
+            <script>
+                pagger("containerbot",<%=pageindex%>,<%=totalpage%>, 3);
+            </script>
+        </c:if>
 
-            </div>
-        </c:forEach>
+
+
 
 
 

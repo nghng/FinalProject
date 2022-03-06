@@ -5,8 +5,8 @@
  */
 package controller.kindergarten;
 
-import dal.EmployeeDBContext;
 import controller.BaseAuthController;
+import dal.EDocumentDBContext;
 import dal.KindergartenDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -15,14 +15,14 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import model.Employee;
+import model.EmployeeDocument;
 import model.Kindergarten;
 
 /**
  *
  * @author admin
  */
-public class KindergartenController extends BaseAuthController {
+public class DetailKindergartenController extends BaseAuthController {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -33,6 +33,7 @@ public class KindergartenController extends BaseAuthController {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -45,44 +46,14 @@ public class KindergartenController extends BaseAuthController {
     @Override
     protected void processGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String searchAll = request.getParameter("searchAll");
-        if(searchAll == null){
-             int kid = -1;
-            String kname = request.getParameter("kname");
-            String rawkid = request.getParameter("kid");
-            if (rawkid != null && rawkid.trim().length() > 0) {
-                kid = Integer.parseInt(rawkid);
-            }
-            EmployeeDBContext edb = new EmployeeDBContext();
-            KindergartenDBContext kdb = new KindergartenDBContext();
-            ArrayList<Kindergarten> kindergartens = kdb.getKinder(kid, kname);
-
-            request.setAttribute("kindergartens", kindergartens);
-            request.getRequestDispatcher("view/kindergarten/display.jsp").forward(request, response);
-        }
+        int kid = Integer.parseInt(request.getParameter("kid"));
+        KindergartenDBContext kdb = new KindergartenDBContext();
+        Kindergarten kindergarten = kdb.getKinderByKid(kid);
+        request.setAttribute("kindergarten", kindergarten);
+        request.getRequestDispatcher("../view/kindergarten/detail.jsp").forward(request, response);
+       
         
         
-        
-        if (searchAll.equals("1")) {
-
-            KindergartenDBContext db = new KindergartenDBContext();
-            int pagesize = 10;
-            String page = request.getParameter("page");
-            if (page == null || page.trim().length() == 0) {
-                page = "1";
-            }
-            int pageindex = Integer.parseInt(page);
-            ArrayList<Kindergarten> kindergartens = db.getKinderForPaging(pageindex, pagesize);
-            request.setAttribute("kindergartens", kindergartens);
-
-            int count = db.count();
-            int totalpage = (count % pagesize == 0) ? (count / pagesize) : (count / pagesize) + 1;
-
-            request.setAttribute("totalpage", totalpage);
-            request.setAttribute("pageindex", pageindex);
-            request.getRequestDispatcher("view/kindergarten/display.jsp").forward(request, response);
-        } 
-
     }
 
     /**
