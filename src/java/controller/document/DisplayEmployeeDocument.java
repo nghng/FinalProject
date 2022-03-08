@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller.kindergarten;
+package controller.document;
 
 import controller.BaseAuthController;
 import dal.EDocumentDBContext;
-import dal.KindergartenDBContext;
+import dal.EmployeeDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -15,14 +15,14 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.Employee;
 import model.EmployeeDocument;
-import model.Kindergarten;
 
 /**
  *
  * @author admin
  */
-public class DetailKindergartenController extends BaseAuthController {
+public class DisplayEmployeeDocument extends BaseAuthController {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -33,7 +33,6 @@ public class DetailKindergartenController extends BaseAuthController {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -46,15 +45,21 @@ public class DetailKindergartenController extends BaseAuthController {
     @Override
     protected void processGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int kid = Integer.parseInt(request.getParameter("kid"));
-        KindergartenDBContext kdb = new KindergartenDBContext();
-        Kindergarten kindergarten = kdb.getKinderByKid(kid);
-        request.getSession().setAttribute("kindergarten", kindergarten);
-        request.setAttribute("kindergarten", kindergarten);
-        request.getRequestDispatcher("../view/kindergarten/detail.jsp").forward(request, response);
-       
-        
-        
+        Employee employee = new Employee();
+        int did = Integer.parseInt(this.getInitParameter("did"));
+        employee = (Employee) request.getSession().getAttribute("employee");
+        EmployeeDBContext edb = new EmployeeDBContext();
+        if (edb.getPermissionForUsingDoc(employee.getRole().getRid(),
+                did, 2) == false) {
+            response.getWriter().print("Bạn không thể xem tài liệu này");
+        } else {
+            EDocumentDBContext eddb = new EDocumentDBContext();
+            ArrayList<EmployeeDocument> edocs = eddb.getEDocumentByEidDid(employee.getEid(), did);
+            request.setAttribute("edocs", edocs);
+            response.getWriter().print("Bạn có thể xem tài liệu này");
+
+        }
+
     }
 
     /**

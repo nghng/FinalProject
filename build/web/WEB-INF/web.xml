@@ -20,6 +20,18 @@
         <servlet-name>DetailKindergartenController</servlet-name>
         <servlet-class>controller.kindergarten.DetailKindergartenController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DisplayController</servlet-name>
+        <servlet-class>controller.employee.DisplayController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DisplayEmployeeDocument</servlet-name>
+        <servlet-class>controller.document.DisplayEmployeeDocument</servlet-class>
+         <init-param>
+            <param-name>did</param-name>
+            <param-value>11</param-value>
+        </init-param>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginController</servlet-name>
         <url-pattern>/login</url-pattern>
@@ -39,6 +51,14 @@
     <servlet-mapping>
         <servlet-name>DetailKindergartenController</servlet-name>
         <url-pattern>/kindergarten/detail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DisplayController</servlet-name>
+        <url-pattern>/kindergarten/detail/employee</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DisplayEmployeeDocument</servlet-name>
+        <url-pattern>/kindergarten/detail/employee/doc</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

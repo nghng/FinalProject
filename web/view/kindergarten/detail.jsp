@@ -17,34 +17,42 @@
         <link href="../css/home/home.css" rel="stylesheet" type="text/css"/>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     </head>
-    <header class="header-basic">
 
-        <div class="header-limiter">
-
-            <h1><a href="#">Cổng Thông Tin<span></span></a></h1>
-
-            <nav>
-                <a href="#">Trang chủ</a>
-                <a href="#">Liên lạc</a>
-                <a href="logout" >Đăng xuất</a>
-
-            </nav>
-        </div>
-
-    </header>
 
 
 
     <body>
+        <header class="header-basic">
+
+            <div class="header-limiter">
+
+                <h1><a href="#">Cổng Thông Tin<span></span></a></h1>
+
+                <nav>
+                    <a href="#">Trang chủ</a>
+                    <a href="#">Liên lạc</a>
+                    <a href="logout" >Đăng xuất</a>
+
+                </nav>
+            </div>
+
+        </header>
+        
+        
         <div>
-            <p>Trường mầm non ${requestScope.kindergarten.kname}</p>
             
         </div>
-          
+        
+        <div>
+            <p>Trường mầm non ${requestScope.kindergarten.kname}</p>
+            <a href="">Tra cứu hồ sơ của trường</a></br>
+            <a href="detail/employee">Tra cứu nhân viên của trường</a>
+        </div>
+
         <div class="footer" style="width: 100%;">
             <p>Liên lạc: hunglengoc2109@gmail.com</p>
         </div>
 
     </body>
 </html>
-f
+
