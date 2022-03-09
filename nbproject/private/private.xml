@@ -3,19 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/Documents/NetBeansProjects/FinalProject/web/view/document/displayEmployeeDocument.jsp</file>
-            <file>file:/D:/Documents/NetBeansProjects/FinalProject/web/js/employee/displayEmployee.js</file>
-            <file>file:/D:/Documents/NetBeansProjects/FinalProject/src/java/dal/EmployeeDBContext.java</file>
-            <file>file:/D:/Documents/NetBeansProjects/FinalProject/web/WEB-INF/web.xml</file>
-            <file>file:/D:/Documents/NetBeansProjects/FinalProject/src/java/controller/BaseAuthController.java</file>
+            <file>file:/D:/Documents/NetBeansProjects/FinalProject/src/java/controller/document/ViewEmployeeDocument.java</file>
             <file>file:/D:/Documents/NetBeansProjects/FinalProject/src/java/dal/EDocumentDBContext.java</file>
-            <file>file:/D:/Documents/NetBeansProjects/FinalProject/web/view/kindergarten/display.jsp</file>
-            <file>file:/D:/Documents/NetBeansProjects/FinalProject/src/java/controller/employee/DisplayController.java</file>
-            <file>file:/D:/Documents/NetBeansProjects/FinalProject/web/js/document/displayEmployeeDocument.js</file>
-            <file>file:/D:/Documents/NetBeansProjects/FinalProject/src/java/controller/LoginController.java</file>
+            <file>file:/D:/Documents/NetBeansProjects/FinalProject/web/view/document/displayEmployeeDocument.jsp</file>
+            <file>file:/D:/Documents/NetBeansProjects/FinalProject/src/java/model/Document.java</file>
+            <file>file:/D:/Documents/NetBeansProjects/FinalProject/web/WEB-INF/web.xml</file>
             <file>file:/D:/Documents/NetBeansProjects/FinalProject/web/view/Employee/displayEmployee.jsp</file>
             <file>file:/D:/Documents/NetBeansProjects/FinalProject/src/java/controller/document/DisplayEmployeeDocument.java</file>
-            <file>file:/D:/Documents/NetBeansProjects/FinalProject/src/java/controller/kindergarten/DetailKindergartenController.java</file>
         </group>
     </open-files>
 </project-private>

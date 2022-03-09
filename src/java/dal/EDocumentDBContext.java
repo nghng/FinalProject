@@ -8,6 +8,7 @@ package dal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -58,7 +59,7 @@ public class EDocumentDBContext extends DBContext {
         ArrayList<EmployeeDocument> eDocs = new ArrayList<>();
         String sql = "select ed.eid,ed.did,ed.content,ed.[from], d.dname from EmployeeDocument ed join Document d\n"
                 + "on ed.did = d.did where ed.eid = ? and d.did = ? \n";
-            
+
         PreparedStatement stm = null;
         ResultSet rs = null;
 
@@ -86,6 +87,29 @@ public class EDocumentDBContext extends DBContext {
 
         return eDocs;
 
+    }
+
+    public byte[] getContent(int eid, int did, Timestamp datetime) {
+        String sql = "select content  from EmployeeDocument \n"
+                + "where eid = ? and did = ? and [from] = ?";
+        try {
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setInt(1, eid);
+            stm.setInt(2, did);
+            stm.setTimestamp(3, datetime);
+            
+            ResultSet rs = stm.executeQuery();
+            if(rs.next()){
+                byte[] result = rs.getBytes("content");
+                return result;
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(EDocumentDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return null;
+        
     }
 
 }

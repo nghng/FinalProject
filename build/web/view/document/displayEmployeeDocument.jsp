@@ -52,71 +52,59 @@
         </header>
 
 
-        <form action="doc" method="GET" id="frmSearch">
-            Loại hồ sơ: 
-            <select name="did" onchange="submitForm();">
-                <option value="-1">----Chọn một loại hồ sơ----</option>
-                <c:forEach items="${requestScope.roles}" var="r">
-                    <c:choose>
-                        <c:when test="${r.rid == requestScope.rid}">
-                            <option
-                                selected="selected"
-                                value="${r.rid}">${r.rname}</option>
-                        </c:when>
-                        <c:otherwise>
-                            <option
+        <!--        <form action="doc" method="GET" id="frmSearch">
+                    Loại hồ sơ: 
+                    <select name="did" onchange="submitForm();">
+                        <option value="-1">----Chọn một loại hồ sơ----</option>
+        <c:forEach items="${requestScope.roles}" var="r">
+            <c:choose>
+                <c:when test="${r.rid == requestScope.rid}">
+                    <option
+                        selected="selected"
+                        value="${r.rid}">${r.rname}</option>
+                </c:when>
+                <c:otherwise>
+                    <option
 
-                                value="${r.rid}">${r.rname}</option>
-                        </c:otherwise>
-                    </c:choose>
+                        value="${r.rid}">${r.rname}</option>
+                </c:otherwise>
+            </c:choose>
 
-                </c:forEach>
-            </select>
-            <form/>
-            <table border="1px">
+        </c:forEach>
+    </select>-->
+        <form/>
+        <table border="1px">
+            <tr>
+                <td>Mã tài liệu</td>
+                <td>Loại tài liệu</td>
+                <td>Ngày tải lên</td>
+                <td>Nội dung</td>
+
+
+            </tr>
+            <c:forEach items="${requestScope.edocs}" var="e"> 
                 <tr>
-                    <td>Mã nhân viên</td>
-                    <td>Họ và tên</td>
-                    <td>Ngày tháng năm sinh</td>
-                    <td>Chức vụ</td>
-                    <td>Giới tính</td>
-                    <td>Trường mầm non</td>
-                    <td>Hồ sơ cá nhân</td>
-
-                </tr>
-                <c:forEach items="${requestScope.employees}" var="e"> 
-                    <tr>
-                        <td>${e.eid}</td>
-                        <td>${e.fullname}</td>
-                        <td>${e.dob}</td>
-                        <td>${e.role.rname}</td>
-
-                        <td><c:choose>
-                                <c:when test="${e.gender}">
-                                    Nam
-                                </c:when>
-                                <c:otherwise>
-                                    Nữ
-                                </c:otherwise>
-                            </c:choose> </td>
-                        <td>${e.kinder.kname}</td>
-                        <td><a href="employee/doc?eid=${e.eid}">Tra cứu</a></td>
-                    </tr>
-                </c:forEach>
+                    <td>${e.eid}</td>
+                    <td>${e.doc.dname}</td>
+                    <td>${e.datetime}</td>
+                    <td><a href="doc/view?eid=${param["eid"]}&datetime=${e.datetime}&did=${e.doc.did}" >Xem</a></td>
+                    
+            </tr>
+        </c:forEach>
 
 
 
-            </table> 
-            <div id="containerbot" class="pagger">  </div>
-            <script>
+    </table> 
+    <!--            <div id="containerbot" class="pagger">  </div>
+                <script>
+    
+                    pagger(${requestScope.rid},"containerbot",${requestScope.pageindex},${requestScope.totalpage}, 3);
+                </script>-->
 
-                pagger(${requestScope.rid},"containerbot",${requestScope.pageindex},${requestScope.totalpage}, 3);
-            </script>
 
+    <div class="footer" style="width: 100%;">
+        <p>Liên lạc: hunglengoc2109@gmail.com</p>
+    </div>
 
-            <div class="footer" style="width: 100%;">
-                <p>Liên lạc: hunglengoc2109@gmail.com</p>
-            </div>
-
-    </body>
+</body>
 </html>

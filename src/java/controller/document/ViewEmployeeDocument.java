@@ -5,24 +5,23 @@
  */
 package controller.document;
 
-import controller.BaseAuthController;
 import dal.EDocumentDBContext;
-import dal.EmployeeDBContext;
+import java.io.BufferedOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.util.ArrayList;
+import java.sql.Timestamp;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import model.Employee;
 import model.EmployeeDocument;
 
 /**
  *
  * @author admin
  */
-public class DisplayEmployeeDocument extends BaseAuthController {
+public class ViewEmployeeDocument extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -33,6 +32,36 @@ public class DisplayEmployeeDocument extends BaseAuthController {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        EDocumentDBContext edb = new EDocumentDBContext();
+        int eid = Integer.parseInt(request.getParameter("eid"));
+        int did = Integer.parseInt(request.getParameter("did"));
+        Timestamp datetime = Timestamp.valueOf(request.getParameter("datetime"));
+
+        byte[] pdf = edb.getContent(eid, did, datetime); // Load PDF byte[] into here
+        if (pdf != null) {
+
+            response.setContentType("application/pdf");
+            OutputStream outs = response.getOutputStream();
+            outs.write(pdf);
+            outs.flush();
+            outs.close();
+
+            // set pdf content
+//            response.setContentType("application/pdf");
+//            // if you want to download instead of opening inline
+//            // response.addHeader("Content-Disposition", "attachment; filename=" + fileName);
+//            // write the content to the output stream
+//            BufferedOutputStream fos1 = new BufferedOutputStream(
+//                    response.getOutputStream());
+//            fos1.write(pdf);
+//            fos1.flush();
+//            fos1.close();
+        }
+    }
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -43,24 +72,9 @@ public class DisplayEmployeeDocument extends BaseAuthController {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void processGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Employee employee = new Employee();
-        int did = Integer.parseInt(this.getInitParameter("did"));
-        employee = (Employee) request.getSession().getAttribute("employee");
-        EmployeeDBContext edb = new EmployeeDBContext();
-        if (edb.getPermissionForUsingDoc(employee.getRole().getRid(),
-                did, 2) == false) {
-            response.getWriter().print("Bạn không thể xem tài liệu này");
-        } else {
-            EDocumentDBContext eddb = new EDocumentDBContext();
-            ArrayList<EmployeeDocument> edocs = eddb.getEDocumentByEidDid(employee.getEid(), did);
-            request.setAttribute("edocs", edocs);
-            request.getRequestDispatcher("../../../view/document/displayEmployeeDocument.jsp").forward(request, response);
-            
-
-        }
-
+        processRequest(request, response);
     }
 
     /**
@@ -72,8 +86,9 @@ public class DisplayEmployeeDocument extends BaseAuthController {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void processPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        processRequest(request, response);
     }
 
     /**
