@@ -11,7 +11,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Hồ sơ cá nhân</title>
+        <title>Chỉnh sửa hồ sơ cá nhân</title>
         <link href='http://fonts.googleapis.com/css?family=Cookie' rel='stylesheet' type='text/css'>
         <link href="../../../css/home/header-basic.css" rel="stylesheet" type="text/css"/>
         <link href="../../../css/home/home.css" rel="stylesheet" type="text/css"/>
@@ -36,39 +36,20 @@
             </div>
 
         </header>
+        <form method="POST"  enctype="multipart/form-data" >
+            <table>
+                <tr>
+                <tr><td>Pdf file</td>
+                    <td><input type="file" name="file" id="file" /> </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <input type="submit" value="Upload" name="upload" id="upload" /> </td>
+                </tr>
+            </table>
+        </form>
 
 
-
-        <form/>
-        <c:choose>
-            <c:when test="${requestScope.edocs.size() > 0}">
-                <table border="1px">
-                    <tr>
-                        <td>Mã tài liệu</td>
-                        <td>Loại tài liệu</td>
-                        <td>Ngày tải lên</td>
-                        <td>Nội dung</td>
-                        <td>Chỉnh sửa nội dung</td>
-                    </tr>
-                    <c:forEach items="${requestScope.edocs}" var="e"> 
-                        <tr>
-                            <td>${e.eid}</td>
-                            <td>${e.doc.dname}</td>
-                            <td>${e.datetime}</td>
-                            <td><a href="doc/view?eid=${param["eid"]}&datetime=${e.datetime}&did=${e.doc.did}" >Xem</a></td>
-                            <td><a href="#" onclick="deleteStudent('doc/del?eid=${param["eid"]}&datetime=${e.datetime}&did=${e.doc.did}')" >Xóa</a>   
-                                <a href="doc/update?eid=${param["eid"]}&datetime=${e.datetime}&did=${e.doc.did}" >Sửa</a>
-
-                            </td>
-
-                        </tr>
-                    </c:forEach>
-                </table> 
-            </c:when>
-            <c:otherwise>
-                <p>Nhân viên này chưa có hồ sơ nào cả</p>
-            </c:otherwise>
-        </c:choose> 
 
 
 

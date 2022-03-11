@@ -5,16 +5,19 @@
  */
 package model;
 
+import java.io.UnsupportedEncodingException;
 import java.sql.Date;
+import java.util.ArrayList;
 
 /**
  *
  * @author admin
  */
 public class Employee {
+
     private int eid;
     private String fullname;
-    private Role role;    
+    private Role role;
     private Date dob;
     private boolean gender;
     private Kindergarten kinder;
@@ -88,10 +91,27 @@ public class Employee {
     public void setPassword(String password) {
         this.password = password;
     }
-    
 
-   
-    
-    
-    
+    static public ArrayList<Employee> getEmployeeByNameEid(ArrayList<Employee> employees, String raw_fullName, int eid) throws UnsupportedEncodingException {
+        ArrayList<Employee> result = new ArrayList<>();
+        if (raw_fullName != null && raw_fullName.trim().length() > 0) {
+            for (Employee e : employees) {
+                e.getFullname();
+                if (e.getFullname().equals(raw_fullName)) {
+                    result.add(e);
+                }
+            }
+        }
+
+        if (eid > -1) {
+            for (Employee e : employees) {
+                if (e.getEid() == eid) {
+                    result.add(e);
+                }
+            }
+        }
+
+        return result;
+    }
+
 }

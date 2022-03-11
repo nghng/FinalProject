@@ -5,24 +5,18 @@
  */
 package controller.document;
 
-import controller.BaseAuthController;
-import dal.EDocumentDBContext;
-import dal.EmployeeDBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import model.Employee;
-import model.EmployeeDocument;
 
 /**
  *
  * @author admin
  */
-public class DisplayEmployeeDocument extends BaseAuthController {
+public class UpdateEmployeeDocument extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -33,6 +27,23 @@ public class DisplayEmployeeDocument extends BaseAuthController {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet UpdateEmployeeDocument</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet UpdateEmployeeDocument at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
+        }
+    }
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -43,28 +54,9 @@ public class DisplayEmployeeDocument extends BaseAuthController {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void processGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Employee employee = new Employee();
-        int eid = -1;
-        try {
-            eid = Integer.parseInt(request.getParameter("eid"));
-        } catch (Exception e) {
-        }
-        int did = Integer.parseInt(this.getInitParameter("did"));
-        employee = (Employee) request.getSession().getAttribute("employee");
-        EmployeeDBContext edb = new EmployeeDBContext();
-        if (edb.getPermissionForUsingDoc(employee.getRole().getRid(),
-                did, 2) == false) {
-            response.getWriter().print("Bạn không thể xem tài liệu này");
-        } else {
-            EDocumentDBContext eddb = new EDocumentDBContext();
-            ArrayList<EmployeeDocument> edocs = eddb.getEDocumentByEidDid(eid, did);
-            request.setAttribute("edocs", edocs);
-            request.getRequestDispatcher("../../../view/document/displayEmployeeDocument.jsp").forward(request, response);
-
-        }
-
+        processRequest(request, response);
     }
 
     /**
@@ -76,8 +68,9 @@ public class DisplayEmployeeDocument extends BaseAuthController {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void processPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        processRequest(request, response);
     }
 
     /**

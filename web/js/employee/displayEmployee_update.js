@@ -4,11 +4,15 @@
  * and open the template in the editor.
  */
 function pagger(rid, id, pageindex, totalpage, gap)
-
 {
-
-    var rid;
     var container = document.getElementById(id);
+
+    if (totalpage === 0) {
+        container.innerHTML = "Không tìm thấy bản ghi này";
+        return;
+    }
+
+
     var result = '';
     if (pageindex - gap > 1)
         result += '<a href="employee?page=1&rid=' + rid + '">' + 'First' + '</a>';
@@ -27,18 +31,5 @@ function pagger(rid, id, pageindex, totalpage, gap)
         result += '<a href="employee?page=' + totalpage + '&rid=' + rid + '">' + 'Last' + '</a>';
 
     container.innerHTML = result;
-}
-
-function submitForm()
-{
-    document.getElementById("frmSearch").submit();
-}
-function deleteStudent(str)
-{
-    var result = confirm("are you sure?");
-    if (result)
-    {
-        window.location.href = str;
-    }
 }
 

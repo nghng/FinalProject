@@ -15,29 +15,23 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.Employee;
 
-
 /**
  *
  * @author SAP-LAP-FPT
  */
-
 public abstract class BaseAuthController extends HttpServlet {
 
-    private boolean isAuthenticated(HttpServletRequest request)
-    {
+    private boolean isAuthenticated(HttpServletRequest request) {
         Employee account = (Employee) request.getSession().getAttribute("employee");
-        if(account == null)
+        if (account == null) {
             return false;
-        else
-        {
-            
-            
+        } else {
+
             String url = request.getServletPath();
             EmployeeDBContext db = new EmployeeDBContext();
             int permission = db.getPermission(account.getEid(), url);
-            
-            
-            return permission >0;
+
+            return permission > 0;
         }
     }
 
@@ -53,17 +47,17 @@ public abstract class BaseAuthController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        if(isAuthenticated(request))
-        {
+        if (isAuthenticated(request)) {
             processGet(request, response);
-        }
-        else
-        {
-            response.getWriter().println("access denined!");
+        } else {
+            response.getWriter().println("Bạn không có quyền truy cập");
+
         }
     }
+
     protected abstract void processGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException;
+
     protected abstract void processPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException;
 
@@ -78,14 +72,12 @@ public abstract class BaseAuthController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        if(isAuthenticated(request))
-        {
+        if (isAuthenticated(request)) {
             //business
             processPost(request, response);
-        }
-        else
-        {
-            response.getWriter().println("access denined!");
+        } else {
+            response.getWriter().println("Bạn không có quyền truy cập");
+
         }
     }
 

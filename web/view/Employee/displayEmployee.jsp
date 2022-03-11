@@ -16,7 +16,7 @@
         <link href="../../css/home/header-basic.css" rel="stylesheet" type="text/css"/>
         <link href="../../css/home/home.css" rel="stylesheet" type="text/css"/>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-        <script src="../../js/employee/displayEmployee.js" type="text/javascript"></script>
+        <script src="../../js/employee/displayEmployee_update.js" type="text/javascript"></script>
         <script>
             function submitForm()
             {
@@ -53,9 +53,10 @@
 
 
         <form action="employee" method="GET" id="frmSearch">
-            Department: 
-            <select name="rid" onchange="submitForm();">
-                <option value="-1">----Chọn một chức vụ----</option>
+            <label for="roleselect">Chọn 1 chức vụ</label>
+
+            <select name="rid" onchange="submitForm();" id="roleselect">
+                <option value="-1">----Tất cả----</option>
                 <c:forEach items="${requestScope.roles}" var="r">
                     <c:choose>
                         <c:when test="${r.rid == requestScope.rid}">
@@ -71,7 +72,14 @@
                     </c:choose>
 
                 </c:forEach>
+
+
             </select>
+            <br/>
+            <label for="info">Tên nhân viên hoặc mã nhân viên cần tìm</label>
+            <input type="text" name="info" id="info"> <br/>
+            <input type="submit" value="Tìm">
+
             <form/>
             <table border="1px">
                 <tr>
@@ -110,7 +118,7 @@
             <div id="containerbot" class="pagger">  </div>
             <script>
 
-                pagger(${requestScope.rid},"containerbot",${requestScope.pageindex},${requestScope.totalpage}, 3);
+                pagger(${requestScope.rid}, "containerbot",${requestScope.pageindex},${requestScope.totalpage}, 3);
             </script>
 
 

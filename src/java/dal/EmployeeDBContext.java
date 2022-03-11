@@ -169,10 +169,21 @@ public class EmployeeDBContext extends DBContext {
         return employees;
     }
 
-    public int count() {
+    public int count(int kid, int rid) {
         try {
-            String sql = "SELECT COUNT(*) as Total FROM Employee";
-            PreparedStatement stm = connection.prepareStatement(sql);
+            PreparedStatement stm = null;
+            String sql = "SELECT COUNT(*) as Total FROM Employee where kid = ?";
+
+            if (rid >= 0) {
+                sql += " and rid = ?";
+                stm = connection.prepareStatement(sql);
+                stm.setInt(1, kid);
+                stm.setInt(2, rid);
+            } else {
+                stm = connection.prepareStatement(sql);
+                stm.setInt(1, kid);
+            }
+
             ResultSet rs = stm.executeQuery();
             if (rs.next()) {
                 return rs.getInt("Total");
@@ -184,8 +195,8 @@ public class EmployeeDBContext extends DBContext {
     }
 
     public boolean getPermissionForUsingDoc(int rid, int did, int authid) {
-        // authid 1: view 
-        //    2: modify+delete
+        // authid 1: modify+delete 
+        //    2: view
         String sql = "select count(*) as total from Document d join GroupDocument gd \n"
                 + "on d.did = gd.did join [Role] r\n"
                 + "on r.rid = gd.rid join Auth a	\n"
@@ -202,7 +213,7 @@ public class EmployeeDBContext extends DBContext {
             if (rs.next()) {
                 total = rs.getInt("total");
             }
-            if(total > 0 ){
+            if (total > 0) {
                 return true;
             }
         } catch (SQLException ex) {
@@ -210,5 +221,6 @@ public class EmployeeDBContext extends DBContext {
         }
         return false;
     }
-
+    
+   
 }

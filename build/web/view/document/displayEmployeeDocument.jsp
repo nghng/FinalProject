@@ -16,21 +16,7 @@
         <link href="../../../css/home/header-basic.css" rel="stylesheet" type="text/css"/>
         <link href="../../../css/home/home.css" rel="stylesheet" type="text/css"/>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-        <script src="../../../js/employee/displayEmployee.js" type="text/javascript"></script>
-        <script>
-            function submitForm()
-            {
-                document.getElementById("frmSearch").submit();
-            }
-            function deleteStudent(id)
-            {
-                var result = confirm("are you sure?");
-                if (result)
-                {
-                    window.location.href = 'delete?id=' + id;
-                }
-            }
-        </script>
+
     </head>
 
 
@@ -52,59 +38,44 @@
         </header>
 
 
-        <!--        <form action="doc" method="GET" id="frmSearch">
-                    Loại hồ sơ: 
-                    <select name="did" onchange="submitForm();">
-                        <option value="-1">----Chọn một loại hồ sơ----</option>
-        <c:forEach items="${requestScope.roles}" var="r">
-            <c:choose>
-                <c:when test="${r.rid == requestScope.rid}">
-                    <option
-                        selected="selected"
-                        value="${r.rid}">${r.rname}</option>
-                </c:when>
-                <c:otherwise>
-                    <option
 
-                        value="${r.rid}">${r.rname}</option>
-                </c:otherwise>
-            </c:choose>
-
-        </c:forEach>
-    </select>-->
         <form/>
-        <table border="1px">
-            <tr>
-                <td>Mã tài liệu</td>
-                <td>Loại tài liệu</td>
-                <td>Ngày tải lên</td>
-                <td>Nội dung</td>
+        <c:choose>
+            <c:when test="${requestScope.edocs.size() > 0}">
+                <table border="1px">
+                    <tr>
+                        <td>Mã tài liệu</td>
+                        <td>Loại tài liệu</td>
+                        <td>Ngày tải lên</td>
+                        <td>Nội dung</td>
+                        <td>Chỉnh sửa nội dung</td>
+                    </tr>
+                    <c:forEach items="${requestScope.edocs}" var="e"> 
+                        <tr>
+                            <td>${e.eid}</td>
+                            <td>${e.doc.dname}</td>
+                            <td>${e.datetime}</td>
+                            <td><a href="doc/view?eid=${param["eid"]}&datetime=${e.datetime}&did=${e.doc.did}" >Xem</a></td>
+                            <td><a href="#" onclick="deleteStudent('doc/del?eid=${param["eid"]}&datetime=${e.datetime}&did=${e.doc.did}')" >Xóa</a>   
+                                <a href="doc/update?eid=${param["eid"]}&datetime=${e.datetime}&did=${e.doc.did}" >Sửa</a>
+
+                            </td>
+
+                        </tr>
+                    </c:forEach>
+                </table> 
+            </c:when>
+            <c:otherwise>
+                <p>Nhân viên này chưa có hồ sơ nào cả</p>
+            </c:otherwise>
+        </c:choose> 
 
 
-            </tr>
-            <c:forEach items="${requestScope.edocs}" var="e"> 
-                <tr>
-                    <td>${e.eid}</td>
-                    <td>${e.doc.dname}</td>
-                    <td>${e.datetime}</td>
-                    <td><a href="doc/view?eid=${param["eid"]}&datetime=${e.datetime}&did=${e.doc.did}" >Xem</a></td>
-                    
-            </tr>
-        </c:forEach>
 
+        <div class="footer" style="width: 100%;">
+            <p>Liên lạc: hunglengoc2109@gmail.com</p>
+        </div>
+        <script src="../../../js/document/displayEmployeeDocument.js" type="text/javascript"></script>
 
-
-    </table> 
-    <!--            <div id="containerbot" class="pagger">  </div>
-                <script>
-    
-                    pagger(${requestScope.rid},"containerbot",${requestScope.pageindex},${requestScope.totalpage}, 3);
-                </script>-->
-
-
-    <div class="footer" style="width: 100%;">
-        <p>Liên lạc: hunglengoc2109@gmail.com</p>
-    </div>
-
-</body>
+    </body>
 </html>

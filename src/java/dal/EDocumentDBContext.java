@@ -97,19 +97,40 @@ public class EDocumentDBContext extends DBContext {
             stm.setInt(1, eid);
             stm.setInt(2, did);
             stm.setTimestamp(3, datetime);
-            
+
             ResultSet rs = stm.executeQuery();
-            if(rs.next()){
+            if (rs.next()) {
                 byte[] result = rs.getBytes("content");
                 return result;
             }
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(EDocumentDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         return null;
-        
+
     }
 
+    public void deleteEdoc(int eid, int did, Timestamp datetime) throws SQLException {
+        String sql = "delete EmployeeDocument \n"
+                + "where eid = ? and did = ? and [from] = ?";
+        PreparedStatement stm = null;
+        
+        try {
+            stm = connection.prepareStatement(sql);
+            stm.setInt(1, eid);
+            stm.setInt(2, did);
+            stm.setTimestamp(3, datetime);
+            stm.executeUpdate();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(EDocumentDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            if(stm != null) stm.close();
+            if(connection != null) connection.close();
+        }
+        
+        
+    }
 }

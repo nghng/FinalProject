@@ -36,6 +36,18 @@
         <servlet-name>ViewEmployeeDocument</servlet-name>
         <servlet-class>controller.document.ViewEmployeeDocument</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DeleteEmployeeDocument</servlet-name>
+        <servlet-class>controller.document.DeleteEmployeeDocument</servlet-class>
+        <init-param>
+            <param-name>did</param-name>
+            <param-value>11</param-value>
+        </init-param>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateEmployeeDocument</servlet-name>
+        <servlet-class>controller.document.UpdateEmployeeDocument</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginController</servlet-name>
         <url-pattern>/login</url-pattern>
@@ -67,6 +79,14 @@
     <servlet-mapping>
         <servlet-name>ViewEmployeeDocument</servlet-name>
         <url-pattern>/kindergarten/detail/employee/doc/view</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteEmployeeDocument</servlet-name>
+        <url-pattern>/kindergarten/detail/employee/doc/del</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateEmployeeDocument</servlet-name>
+        <url-pattern>/kindergarten/detail/employee/doc/update</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
