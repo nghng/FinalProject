@@ -46,7 +46,8 @@
         <div>
             <p>Trường mầm non ${requestScope.kindergarten.kname}</p>
             <a href="">Tra cứu hồ sơ của trường</a></br>
-            <a href="detail/employee">Tra cứu nhân viên của trường</a>
+            <a href="detail/employee">Tra cứu nhân viên của trường</a></br>
+            <a href="detail/create">Tạo mới hồ sơ</a>
         </div>
 
         <div class="footer" style="width: 100%;">

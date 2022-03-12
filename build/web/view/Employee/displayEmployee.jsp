@@ -17,20 +17,7 @@
         <link href="../../css/home/home.css" rel="stylesheet" type="text/css"/>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
         <script src="../../js/employee/displayEmployee_update.js" type="text/javascript"></script>
-        <script>
-            function submitForm()
-            {
-                document.getElementById("frmSearch").submit();
-            }
-            function deleteStudent(id)
-            {
-                var result = confirm("are you sure?");
-                if (result)
-                {
-                    window.location.href = 'delete?id=' + id;
-                }
-            }
-        </script>
+       
     </head>
 
 

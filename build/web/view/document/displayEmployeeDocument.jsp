@@ -47,6 +47,7 @@
                         <td>Mã tài liệu</td>
                         <td>Loại tài liệu</td>
                         <td>Ngày tải lên</td>
+                        <td>Ngày thay đổi</td>
                         <td>Nội dung</td>
                         <td>Chỉnh sửa nội dung</td>
                     </tr>
@@ -55,6 +56,10 @@
                             <td>${e.eid}</td>
                             <td>${e.doc.dname}</td>
                             <td>${e.datetime}</td>
+                            <c:choose>
+                                <c:when test="${e.modifiedDate != null}"><td>${e.modifiedDate}</td> </c:when>
+                                <c:otherwise><td>Chưa thay đổi lần nào</td></c:otherwise>
+                            </c:choose>
                             <td><a href="doc/view?eid=${param["eid"]}&datetime=${e.datetime}&did=${e.doc.did}" >Xem</a></td>
                             <td><a href="#" onclick="deleteStudent('doc/del?eid=${param["eid"]}&datetime=${e.datetime}&did=${e.doc.did}')" >Xóa</a>   
                                 <a href="doc/update?eid=${param["eid"]}&datetime=${e.datetime}&did=${e.doc.did}" >Sửa</a>

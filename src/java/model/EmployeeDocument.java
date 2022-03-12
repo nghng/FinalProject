@@ -18,16 +18,28 @@ public class EmployeeDocument {
     private Document doc;
     private Timestamp datetime;
     private byte[] content;
+    private Timestamp modifiedDate;
 
     public EmployeeDocument() {
     }
 
-    public EmployeeDocument(int eid, Document doc, Timestamp datetime, byte[] content) {
+    public EmployeeDocument(int eid, Document doc, Timestamp datetime, byte[] content, Timestamp modifiedDate) {
         this.eid = eid;
         this.doc = doc;
         this.datetime = datetime;
         this.content = content;
+        this.modifiedDate = modifiedDate;
     }
+
+    public Timestamp getModifiedDate() {
+        return modifiedDate;
+    }
+
+    public void setModifiedDate(Timestamp modifiedDate) {
+        this.modifiedDate = modifiedDate;
+    }
+
+    
 
     public Timestamp getDatetime() {
         return datetime;

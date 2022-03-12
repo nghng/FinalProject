@@ -47,6 +47,20 @@
     <servlet>
         <servlet-name>UpdateEmployeeDocument</servlet-name>
         <servlet-class>controller.document.UpdateEmployeeDocument</servlet-class>
+        <multipart-config>
+            <max-file-size>20848820</max-file-size>
+            <max-request-size>418018841</max-request-size>
+            <file-size-threshold>1048576</file-size-threshold>
+        </multipart-config>
+    </servlet>
+    <servlet>
+        <servlet-name>CreateEmployeeDocument</servlet-name>
+        <servlet-class>controller.document.CreateEmployeeDocument</servlet-class>
+          <multipart-config>
+            <max-file-size>20848820</max-file-size>
+            <max-request-size>418018841</max-request-size>
+            <file-size-threshold>1048576</file-size-threshold>
+        </multipart-config>
     </servlet>
     <servlet-mapping>
         <servlet-name>LoginController</servlet-name>
@@ -87,6 +101,10 @@
     <servlet-mapping>
         <servlet-name>UpdateEmployeeDocument</servlet-name>
         <url-pattern>/kindergarten/detail/employee/doc/update</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreateEmployeeDocument</servlet-name>
+        <url-pattern>/kindergarten/detail/create</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

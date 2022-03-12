@@ -3,13 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/Documents/NetBeansProjects/FinalProject/src/java/dal/EDocumentDBContext.java</file>
-            <file>file:/D:/Documents/NetBeansProjects/FinalProject/web/view/document/displayEmployeeDocument.jsp</file>
-            <file>file:/D:/Documents/NetBeansProjects/FinalProject/web/view/document/UpdateEmployeeDocument.jsp</file>
-            <file>file:/D:/Documents/NetBeansProjects/FinalProject/src/java/dal/EmployeeDBContext.java</file>
-            <file>file:/D:/Documents/NetBeansProjects/FinalProject/src/java/controller/BaseAuthController.java</file>
-            <file>file:/D:/Documents/NetBeansProjects/FinalProject/src/java/controller/document/DeleteEmployeeDocument.java</file>
-            <file>file:/D:/Documents/NetBeansProjects/FinalProject/src/java/controller/document/UpdateEmployeeDocument.java</file>
+            <file>file:/D:/Documents/NetBeansProjects/FinalProject/web/view/kindergarten/detail.jsp</file>
+            <file>file:/D:/Documents/NetBeansProjects/FinalProject/web/view/document/createEmployeeDocument.jsp</file>
+            <file>file:/D:/Documents/NetBeansProjects/FinalProject/src/java/controller/document/CreateEmployeeDocument.java</file>
+            <file>file:/D:/Documents/NetBeansProjects/FinalProject/web/view/document/updateEmployeeDocument.jsp</file>
         </group>
     </open-files>
 </project-private>

@@ -13,8 +13,8 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Chỉnh sửa hồ sơ cá nhân</title>
         <link href='http://fonts.googleapis.com/css?family=Cookie' rel='stylesheet' type='text/css'>
-        <link href="../../../css/home/header-basic.css" rel="stylesheet" type="text/css"/>
-        <link href="../../../css/home/home.css" rel="stylesheet" type="text/css"/>
+        <link href="../../../../css/home/header-basic.css" rel="stylesheet" type="text/css"/>
+        <link href="../../../../css/home/home.css" rel="stylesheet" type="text/css"/>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 
     </head>
@@ -39,7 +39,7 @@
         <form method="POST"  enctype="multipart/form-data" >
             <table>
                 <tr>
-                <tr><td>Pdf file</td>
+                <tr><td>Pdf file: </td>
                     <td><input type="file" name="file" id="file" /> </td>
                 </tr>
                 <tr>
@@ -47,6 +47,15 @@
                         <input type="submit" value="Upload" name="upload" id="upload" /> </td>
                 </tr>
             </table>
+            <c:if test="${requestScope.error != null}">
+                <p>${requestScope.error}</p>
+            </c:if>
+            <c:if test="${requestScope.success}">
+                <p>Cập nhật file thành công</p>
+                <a href="view?eid=${param["eid"]}&datetime=${param["datetime"]}&did=${param["did"]}">Nhấn vào đây để xem tài liệu<a/>
+
+                </c:if>
+
         </form>
 
 

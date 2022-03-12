@@ -13,8 +13,8 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
         <link href='http://fonts.googleapis.com/css?family=Cookie' rel='stylesheet' type='text/css'>
-        <link href="../css/home/header-basic.css" rel="stylesheet" type="text/css"/>
-        <link href="../css/home/home.css" rel="stylesheet" type="text/css"/>
+        <link href="../../css/home/header-basic.css" rel="stylesheet" type="text/css"/>
+        <link href="../../css/home/home.css" rel="stylesheet" type="text/css"/>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     </head>
 
@@ -37,18 +37,34 @@
             </div>
 
         </header>
-        
-        
         <div>
-            
+            <form method="POST" enctype="multipart/form-data">
+                <table>
+                    <tr>
+                        <td> Loại tài liệu<td/>
+                        <td><select name="did" id="did"></select> <td/>
+                    <tr/>
+
+                    <tr>
+                        <td>Pdf file: </td>
+                        <td><input type="file" name="file" id="file" /> </td>
+                    </tr>
+
+                    <tr>
+                        <td></td>
+                        <td><input type="submit" value="Khởi tạo"></td>
+                    </tr>
+
+
+                </table>
+
+
+
+
+            </form>
         </div>
-        
-        <div>
-            <p>Trường mầm non ${requestScope.kindergarten.kname}</p>
-            <a href="">Tra cứu hồ sơ của trường</a></br>
-            <a href="detail/employee">Tra cứu nhân viên của trường</a></br>
-            <a href="detail/create">Tạo mới hồ sơ</a>
-        </div>
+
+
 
         <div class="footer" style="width: 100%;">
             <p>Liên lạc: hunglengoc2109@gmail.com</p>
