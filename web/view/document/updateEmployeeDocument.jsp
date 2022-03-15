@@ -25,12 +25,12 @@
         <header class="header-basic">
             <div class="header-limiter">
 
-                <h1><a href="../../../home">Cổng Thông Tin<span></span></a></h1>
+                <h1><a href="../../../../home">Cổng Thông Tin<span></span></a></h1>
 
                 <nav>
-                    <a href="../../home">Trang chủ</a>
-                    <a href="#">Liên lạc</a>
-                    <a href="../../logout" >Đăng xuất</a>
+                     <a href="${pageContext.request.contextPath}/home">Trang chủ</a>
+                    <a href="mailto: hunglengoc2109@gmail.com">Liên lạc</a>
+                    <a href="${pageContext.request.contextPath}/logout" >Đăng xuất</a>
 
                 </nav>
             </div>
@@ -53,7 +53,6 @@
             <c:if test="${requestScope.success}">
                 <p>Cập nhật file thành công</p>
                 <a href="view?eid=${param["eid"]}&datetime=${param["datetime"]}&did=${param["did"]}">Nhấn vào đây để xem tài liệu<a/>
-
                 </c:if>
 
         </form>

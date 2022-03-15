@@ -22,27 +22,55 @@ import model.Kindergarten;
  */
 public class EDocumentDBContext extends DBContext {
 
-    public ArrayList<EmployeeDocument> getEDocumentByKid(int kid) {
+    public ArrayList<EmployeeDocument> getEDocumentByKid(int kid, int rid, int pageindex, int pagesize) {
         ArrayList<EmployeeDocument> eDocs = new ArrayList<>();
-        String sql = "select ed.did,ed.eid,ed.[from],ed.content,d.dname from EmployeeDocument ed join Employee e\n"
-                + "on e.eid = ed.eid join Kindergarten k \n"
-                + "on k.kID = e.kID join Document d on d.did = ed.did where k.kID = ?";
+        String sql = " SELECT * FROM \n"
+                + "(select ed.eid,d.did,d.dname,ed.content,ed.modifiedDate,ed.[from],ed.meid,em.rid,ROW_NUMBER() OVER (ORDER BY ed.[from] ASC) as row_index from EmployeeDocument ed join Document d\n"
+                + " on ed.did = d.did join Employee em \n"
+                + " on em.eid = ed.eid where kID = ?) tbl\n"
+                + "WHERE row_index >=   (?-1)*? + 1\n"
+                + "AND row_index <= ? * ?\n";
+        String sql_rid = " SELECT * FROM \n"
+                + "(select ed.eid,d.did,d.dname,ed.content,ed.modifiedDate,ed.[from],ed.meid,em.rid,ROW_NUMBER() OVER (ORDER BY ed.[from] ASC) as row_index from EmployeeDocument ed join Document d\n"
+                + " on ed.did = d.did join Employee em \n"
+                + " on em.eid = ed.eid where kID = ? and rid = ?) tbl\n"
+                + "WHERE row_index >=   (?-1)*? + 1\n"
+                + "AND row_index <= ? * ?\n";
+
         PreparedStatement stm = null;
         ResultSet rs = null;
 
         try {
-            stm = connection.prepareStatement(sql);
-            stm.setInt(1, kid);
+            if (rid >= 0) {
+                stm = connection.prepareStatement(sql_rid);
+                stm.setInt(1, kid);
+                stm.setInt(2, rid);
+                stm.setInt(3, pageindex);
+                stm.setInt(4, pagesize);
+                stm.setInt(5, pageindex);
+                stm.setInt(6, pagesize);
+
+            } else {
+                stm = connection.prepareStatement(sql);
+                stm.setInt(1, kid);
+                stm.setInt(2, pageindex);
+                stm.setInt(3, pagesize);
+                stm.setInt(4, pageindex);
+                stm.setInt(5, pagesize);
+            }
+
             rs = stm.executeQuery();
             while (rs.next()) {
                 EmployeeDocument ed = new EmployeeDocument();
                 Document d = new Document();
-                ed.setEid(rs.getInt("eid"));
                 d.setDid(rs.getInt("did"));
                 d.setDname(rs.getString("dname"));
-                ed.setDoc(d);
+                ed.setEid(rs.getInt("eid"));
                 ed.setContent(rs.getBytes("content"));
+                ed.setModifiedDate(rs.getTimestamp("modifiedDate"));
                 ed.setDatetime(rs.getTimestamp("from"));
+                ed.setDoc(d);
+                ed.setMeid(rs.getInt("meid"));
                 eDocs.add(ed);
 
             }
@@ -54,10 +82,53 @@ public class EDocumentDBContext extends DBContext {
         return eDocs;
 
     }
+    
+    public int getCountEDocumentByKid(int kid, int rid) {
+        int total = 0;
+        String sql = " SELECT count(*) as total FROM \n"
+                + "(select ed.eid,d.did,d.dname,ed.content,ed.modifiedDate,ed.[from],ed.meid,em.rid,ROW_NUMBER() OVER (ORDER BY ed.[from] ASC) as row_index from EmployeeDocument ed join Document d\n"
+                + " on ed.did = d.did join Employee em \n"
+                + " on em.eid = ed.eid where kID = ?) tbl\n";
+
+        String sql_rid = " SELECT count(*) as total FROM \n"
+                + "(select ed.eid,d.did,d.dname,ed.content,ed.modifiedDate,ed.[from],ed.meid,em.rid,ROW_NUMBER() OVER (ORDER BY ed.[from] ASC) as row_index from EmployeeDocument ed join Document d\n"
+                + " on ed.did = d.did join Employee em \n"
+                + " on em.eid = ed.eid where kID = ? and rid = ?) tbl\n";
+              
+
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+
+        try {
+            if (rid >= 0) {
+                stm = connection.prepareStatement(sql_rid);
+                stm.setInt(1, kid);
+                stm.setInt(2, rid);
+               
+
+            } else {
+                stm = connection.prepareStatement(sql);
+                stm.setInt(1, kid);
+              
+            }
+
+            rs = stm.executeQuery();
+            while (rs.next()) {
+               total = rs.getInt("total");
+               
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(EDocumentDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return total;
+
+    }
 
     public ArrayList<EmployeeDocument> getEDocumentByEidDid(int eid, int did) {
         ArrayList<EmployeeDocument> eDocs = new ArrayList<>();
-        String sql = "select ed.eid,ed.did,ed.content,ed.[from], d.dname,ed.modifiedDate from EmployeeDocument ed join Document d\n"
+        String sql = "select ed.eid,ed.did,ed.content,ed.[from], d.dname,ed.modifiedDate,ed.meid from EmployeeDocument ed join Document d\n"
                 + "on ed.did = d.did where ed.eid = ? and d.did = ? \n";
 
         PreparedStatement stm = null;
@@ -78,6 +149,7 @@ public class EDocumentDBContext extends DBContext {
                 ed.setContent(rs.getBytes("content"));
                 ed.setDatetime(rs.getTimestamp("from"));
                 ed.setModifiedDate(rs.getTimestamp("modifiedDate"));
+                ed.setMeid(rs.getInt("meid"));
                 eDocs.add(ed);
 
             }
@@ -138,10 +210,10 @@ public class EDocumentDBContext extends DBContext {
 
     }
 
-    public boolean updateDocument(int eid, int did, Timestamp from, byte[] content) throws SQLException {
+    public boolean updateDocument(int eid, int did, Timestamp from, byte[] content, int meid) throws SQLException {
         String sql = "UPDATE [dbo].[EmployeeDocument]\n"
                 + "   SET\n"
-                + "      [content] = ?,[modifiedDate] = ?\n"
+                + "      [content] = ?,[modifiedDate] = ?,[meid] = ?\n"
                 + " WHERE eid = ? and did = ? and [from] = ?";
 
         PreparedStatement stm = null;
@@ -152,9 +224,10 @@ public class EDocumentDBContext extends DBContext {
             stm = connection.prepareStatement(sql);
             stm.setBytes(1, content);
             stm.setTimestamp(2, current);
-            stm.setInt(3, eid);
-            stm.setInt(4, did);
-            stm.setTimestamp(5, from);
+            stm.setInt(3, meid);
+            stm.setInt(4, eid);
+            stm.setInt(5, did);
+            stm.setTimestamp(6, from);
 
             success = stm.executeUpdate();
             if (success >= 1) {
@@ -220,7 +293,7 @@ public class EDocumentDBContext extends DBContext {
 
     public ArrayList<EmployeeDocument> getEdocsByEid(int eid) {
         ArrayList<EmployeeDocument> edocs = new ArrayList<>();
-        String sql = "select eid,d.did,d.dname,[from],content,modifiedDate from EmployeeDocument ed\n"
+        String sql = "select eid,d.did,d.dname,[from],content,modifiedDate,meid from EmployeeDocument ed\n"
                 + "join Document d on d.did = ed.did\n"
                 + " where eid = ?";
         PreparedStatement stm = null;
@@ -239,7 +312,8 @@ public class EDocumentDBContext extends DBContext {
                 ed.setDatetime(rs.getTimestamp("from"));
                 ed.setContent(rs.getBytes("content"));
                 ed.setModifiedDate(rs.getTimestamp("modifiedDate"));
-                ed.setDoc(d);               
+                ed.setDoc(d);
+                ed.setMeid(rs.getInt("meid"));
                 edocs.add(ed);
 
             }
@@ -248,6 +322,238 @@ public class EDocumentDBContext extends DBContext {
         }
 
         return edocs;
+
+    }
+
+    public ArrayList<EmployeeDocument> getEDocumentByKidRidFromTo(int kid, Timestamp from, Timestamp to, int rid, int pageindex, int pagesize) {
+        ArrayList<EmployeeDocument> eDocs = new ArrayList<>();
+        String afterAndBefore = " SELECT * FROM \n"
+                + "(select ed.eid,d.did,d.dname,ed.content,ed.modifiedDate,ed.[from],em.rid,ed.meid,ROW_NUMBER() OVER (ORDER BY ed.[from] ASC) as row_index from EmployeeDocument ed join Document d\n"
+                + "on ed.did = d.did join Employee em \n"
+                + "on em.eid = ed.eid where kID = ? and ed.[from] >= ? and ed.[from] <= ?) tbl\n"
+                + "WHERE row_index >=   (?-1)*? + 1\n"
+                + "AND row_index <= ? * ?\n";
+        String afterAndBefore_rid = " SELECT * FROM \n"
+                + "(select ed.eid,d.did,d.dname,ed.content,ed.modifiedDate,ed.[from],em.rid,ed.meid,ROW_NUMBER() OVER (ORDER BY ed.[from] ASC) as row_index from EmployeeDocument ed join Document d\n"
+                + "on ed.did = d.did join Employee em \n"
+                + "on em.eid = ed.eid where kID = ? and ed.[from] >= ? and ed.[from] <= ? and em.rid = ?) tbl\n"
+                + "WHERE row_index >=   (?-1)*? + 1\n"
+                + "AND row_index <= ? * ?\n";
+
+        String after_query = " SELECT * FROM \n"
+                + "(select ed.eid,d.did,d.dname,ed.content,ed.modifiedDate,ed.[from],em.rid,ed.meid,ROW_NUMBER() OVER (ORDER BY ed.[from] ASC) as row_index from EmployeeDocument ed join Document d\n"
+                + "on ed.did = d.did join Employee em \n"
+                + "on em.eid = ed.eid where kID = ? and ed.[from] >= ?) tbl\n"
+                + "WHERE row_index >=   (?-1)*? + 1\n"
+                + "AND row_index <= ? * ?\n";
+        String after_query_rid = " SELECT * FROM \n"
+                + "(select ed.eid,d.did,d.dname,ed.content,ed.modifiedDate,ed.[from],em.rid,ed.meid,ROW_NUMBER() OVER (ORDER BY ed.[from] ASC) as row_index from EmployeeDocument ed join Document d\n"
+                + "on ed.did = d.did join Employee em \n"
+                + "on em.eid = ed.eid where kID = ? and ed.[from] >= ? and em.rid = ?) tbl\n"
+                + "WHERE row_index >=   (?-1)*? + 1\n"
+                + "AND row_index <= ? * ?\n";
+
+        String before_query = " SELECT * FROM \n"
+                + "(select ed.eid,d.did,d.dname,ed.content,ed.modifiedDate,ed.[from],em.rid,ed.meid,ROW_NUMBER() OVER (ORDER BY ed.[from] ASC) as row_index from EmployeeDocument ed join Document d\n"
+                + "on ed.did = d.did join Employee em \n"
+                + "on em.eid = ed.eid where kID = ? and ed.[from] <= ?) tbl\n"
+                + "WHERE row_index >=   (?-1)*? + 1\n"
+                + "AND row_index <= ? * ?\n";
+        String before_query_rid = " SELECT * FROM \n"
+                + "(select ed.eid,d.did,d.dname,ed.content,ed.modifiedDate,ed.[from],em.rid,ed.meid,ROW_NUMBER() OVER (ORDER BY ed.[from] ASC) as row_index from EmployeeDocument ed join Document d\n"
+                + "on ed.did = d.did join Employee em \n"
+                + "on em.eid = ed.eid where kID = ? and ed.[from] <= ? and em.rid = ?) tbl\n"
+                + "WHERE row_index >=   (?-1)*? + 1\n"
+                + "AND row_index <= ? * ?\n";
+
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+
+        String rid_query = " and rid = ?";
+
+        try {
+            if (from != null && to == null) {
+                if (rid >= 0) {
+                    stm = connection.prepareStatement(after_query_rid);
+                    stm.setInt(1, kid);
+                    stm.setTimestamp(2, from);
+                    stm.setInt(3, rid);
+                    stm.setInt(4, pageindex);
+                    stm.setInt(5, pagesize);
+                    stm.setInt(6, pageindex);
+                    stm.setInt(7, pagesize);
+                } else {
+                    stm = connection.prepareStatement(after_query);
+                    stm.setInt(1, kid);
+                    stm.setTimestamp(2, from);
+                    stm.setInt(3, pageindex);
+                    stm.setInt(4, pagesize);
+                    stm.setInt(5, pageindex);
+                    stm.setInt(6, pagesize);
+                }
+
+            }
+            if (from == null && to != null) {
+                if (rid >= 0) {
+                    stm = connection.prepareStatement(before_query_rid);
+                    stm.setInt(1, kid);
+                    stm.setTimestamp(2, from);
+                    stm.setInt(3, rid);
+                    stm.setInt(4, pageindex);
+                    stm.setInt(5, pagesize);
+                    stm.setInt(6, pageindex);
+                    stm.setInt(7, pagesize);
+                } else {
+                    stm = connection.prepareStatement(before_query);
+                    stm.setInt(1, kid);
+                    stm.setTimestamp(2, from);
+                    stm.setInt(3, pageindex);
+                    stm.setInt(4, pagesize);
+                    stm.setInt(5, pageindex);
+                    stm.setInt(6, pagesize);
+                }
+            }
+            if (from != null && to != null) {
+                if (rid >= 0) {
+                    stm = connection.prepareStatement(afterAndBefore_rid);
+                    stm.setInt(1, kid);
+                    stm.setTimestamp(2, from);
+                    stm.setTimestamp(3, to);
+                    stm.setInt(4, rid);
+                    stm.setInt(5, pageindex);
+                    stm.setInt(6, pagesize);
+                    stm.setInt(7, pageindex);
+                    stm.setInt(8, pagesize);
+                } else {
+                    stm = connection.prepareStatement(afterAndBefore);
+                    stm.setInt(1, kid);
+                    stm.setTimestamp(2, from);
+                    stm.setTimestamp(3, to);
+                    stm.setInt(4, pageindex);
+                    stm.setInt(5, pagesize);
+                    stm.setInt(6, pageindex);
+                    stm.setInt(7, pagesize);
+                }
+            }
+
+            rs = stm.executeQuery();
+            while (rs.next()) {
+                EmployeeDocument ed = new EmployeeDocument();
+                Document d = new Document();
+                d.setDid(rs.getInt("did"));
+                d.setDname(rs.getString("dname"));
+                ed.setEid(rs.getInt("eid"));
+                ed.setContent(rs.getBytes("content"));
+                ed.setModifiedDate(rs.getTimestamp("modifiedDate"));
+                ed.setDatetime(rs.getTimestamp("from"));
+                ed.setDoc(d);
+                ed.setMeid(rs.getInt("meid"));
+                eDocs.add(ed);
+
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(EDocumentDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return eDocs;
+
+    }
+
+    public int getCountEDocumentByKidRidFromTo(int kid, Timestamp from, Timestamp to, int rid) {
+        int total = 0;
+
+        String afterAndBefore = " SELECT count(*) as total FROM \n"
+                + "(select ed.eid,d.did,d.dname,ed.content,ed.modifiedDate,ed.[from],em.rid,ed.meid,ROW_NUMBER() OVER (ORDER BY ed.[from] ASC) as row_index from EmployeeDocument ed join Document d\n"
+                + "on ed.did = d.did join Employee em \n"
+                + "on em.eid = ed.eid where kID = ? and ed.[from] >= ? and ed.[from] <= ?) tbl\n";
+
+        String afterAndBefore_rid = " SELECT count(*) as total FROM \n"
+                + "(select ed.eid,d.did,d.dname,ed.content,ed.modifiedDate,ed.[from],em.rid,ed.meid,ROW_NUMBER() OVER (ORDER BY ed.[from] ASC) as row_index from EmployeeDocument ed join Document d\n"
+                + "on ed.did = d.did join Employee em \n"
+                + "on em.eid = ed.eid where kID = ? and ed.[from] >= ? and ed.[from] <= ? and em.rid = ?) tbl\n";
+
+        String after_query = " SELECT count(*) as total FROM \n"
+                + "(select ed.eid,d.did,d.dname,ed.content,ed.modifiedDate,ed.[from],em.rid,ed.meid,ROW_NUMBER() OVER (ORDER BY ed.[from] ASC) as row_index from EmployeeDocument ed join Document d\n"
+                + "on ed.did = d.did join Employee em \n"
+                + "on em.eid = ed.eid where kID = ? and ed.[from] >= ?) tbl\n";
+
+        String after_query_rid = " SELECT count(*) as total FROM \n"
+                + "(select ed.eid,d.did,d.dname,ed.content,ed.modifiedDate,ed.[from],em.rid,ed.meid,ROW_NUMBER() OVER (ORDER BY ed.[from] ASC) as row_index from EmployeeDocument ed join Document d\n"
+                + "on ed.did = d.did join Employee em \n"
+                + "on em.eid = ed.eid where kID = ? and ed.[from] >= ? and em.rid = ?) tbl\n";
+
+        String before_query = " SELECT count(*) as total FROM \n"
+                + "(select ed.eid,d.did,d.dname,ed.content,ed.modifiedDate,ed.[from],em.rid,ed.meid,ROW_NUMBER() OVER (ORDER BY ed.[from] ASC) as row_index from EmployeeDocument ed join Document d\n"
+                + "on ed.did = d.did join Employee em \n"
+                + "on em.eid = ed.eid where kID = ? and ed.[from] <= ?) tbl\n";
+
+        String before_query_rid = " SELECT count(*) as total FROM \n"
+                + "(select ed.eid,d.did,d.dname,ed.content,ed.modifiedDate,ed.[from],em.rid,ed.meid,ROW_NUMBER() OVER (ORDER BY ed.[from] ASC) as row_index from EmployeeDocument ed join Document d\n"
+                + "on ed.did = d.did join Employee em \n"
+                + "on em.eid = ed.eid where kID = ? and ed.[from] <= ? and em.rid = ?) tbl\n";
+
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+
+        try {
+            if (from != null && to == null) {
+                if (rid >= 0) {
+                    stm = connection.prepareStatement(after_query_rid);
+                    stm.setInt(1, kid);
+                    stm.setTimestamp(2, from);
+                    stm.setInt(3, rid);
+                   
+                } else {
+                    stm = connection.prepareStatement(after_query);
+                    stm.setInt(1, kid);
+                    stm.setTimestamp(2, from);
+                  
+                }
+
+            }
+            if (from == null && to != null) {
+                if (rid >= 0) {
+                    stm = connection.prepareStatement(before_query_rid);
+                    stm.setInt(1, kid);
+                    stm.setTimestamp(2, from);
+                    stm.setInt(3, rid);
+                 
+                } else {
+                    stm = connection.prepareStatement(before_query);
+                    stm.setInt(1, kid);
+                    stm.setTimestamp(2, from);
+                 
+                }
+            }
+            if (from != null && to != null) {
+                if (rid >= 0) {
+                    stm = connection.prepareStatement(afterAndBefore_rid);
+                    stm.setInt(1, kid);
+                    stm.setTimestamp(2, from);
+                    stm.setTimestamp(3, to);
+                    stm.setInt(4, rid);
+                   
+                } else {
+                    stm = connection.prepareStatement(afterAndBefore);
+                    stm.setInt(1, kid);
+                    stm.setTimestamp(2, from);
+                    stm.setTimestamp(3, to);
+                   
+                }
+            }
+
+            rs = stm.executeQuery();
+            while (rs.next()) {
+                total = rs.getInt("total");
+
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(EDocumentDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return total;
 
     }
 

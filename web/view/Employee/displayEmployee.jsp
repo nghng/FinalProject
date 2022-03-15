@@ -11,13 +11,13 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Nhân viên của trường</title>
         <link href='http://fonts.googleapis.com/css?family=Cookie' rel='stylesheet' type='text/css'>
         <link href="../../css/home/header-basic.css" rel="stylesheet" type="text/css"/>
         <link href="../../css/home/home.css" rel="stylesheet" type="text/css"/>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
         <script src="../../js/employee/displayEmployee_update.js" type="text/javascript"></script>
-       
+
     </head>
 
 
@@ -29,10 +29,9 @@
                 <h1><a href="../../home">Cổng Thông Tin<span></span></a></h1>
 
                 <nav>
-                    <a href="../../home">Trang chủ</a>
-                    <a href="#">Liên lạc</a>
-                    <a href="../../logout" >Đăng xuất</a>
-
+                    <a href="${pageContext.request.contextPath}/home">Trang chủ</a>
+                    <a href="mailto: hunglengoc2109@gmail.com">Liên lạc</a>
+                    <a href="${pageContext.request.contextPath}/logout" >Đăng xuất</a>
                 </nav>
             </div>
 

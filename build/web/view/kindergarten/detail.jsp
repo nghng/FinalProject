@@ -11,7 +11,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Trường mầm non ${requestScope.kindergarten.kname}</title>
         <link href='http://fonts.googleapis.com/css?family=Cookie' rel='stylesheet' type='text/css'>
         <link href="../css/home/header-basic.css" rel="stylesheet" type="text/css"/>
         <link href="../css/home/home.css" rel="stylesheet" type="text/css"/>
@@ -29,25 +29,33 @@
                 <h1><a href="#">Cổng Thông Tin<span></span></a></h1>
 
                 <nav>
-                    <a href="#">Trang chủ</a>
-                    <a href="#">Liên lạc</a>
-                    <a href="logout" >Đăng xuất</a>
+                    <a href="../home">Trang chủ</a>
+                    <a href="mailto: hunglengoc2109@gmail.com">Liên lạc</a>
+                    <a href="../logout" >Đăng xuất</a>
 
                 </nav>
             </div>
 
         </header>
-        
-        
+
+        <c:set var="e" scope="session" value="${sessionScope.employee}"/>
         <div>
-            
+            <p><c:choose>
+                    <c:when test="${e.eid != 0 and e.gender}">Xin chào thầy ${e.fullname}</c:when>
+                    <c:when test="${e.eid != 0 and e.gender == false}">Xin chào cô ${e.fullname}</c:when>
+                    <c:otherwise>Xin chào cán bộ ${e.fullname}</c:otherwise>
+
+                </c:choose>
+            </p>
         </div>
-        
+
         <div>
             <p>Trường mầm non ${requestScope.kindergarten.kname}</p>
-            <a href="">Tra cứu hồ sơ của trường</a></br>
+            <a href="detail/general/doc?kid=${requestScope.kindergarten.kid}">Tra cứu hồ sơ của trường</a></br>
             <a href="detail/employee">Tra cứu nhân viên của trường</a></br>
-            <a href="detail/create">Tạo mới hồ sơ</a>
+            <a href="detail/create">Tạo mới hồ sơ</a></br>
+            <a href="detail/personal/doc?eid=${sessionScope.employee.eid}">Xem tất cả hồ sơ của bạn</a></br>
+
         </div>
 
         <div class="footer" style="width: 100%;">

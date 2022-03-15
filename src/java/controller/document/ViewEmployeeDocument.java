@@ -5,7 +5,9 @@
  */
 package controller.document;
 
+import controller.BaseAuthController;
 import dal.EDocumentDBContext;
+import dal.EmployeeDBContext;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -15,13 +17,14 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.Employee;
 import model.EmployeeDocument;
 
 /**
  *
  * @author admin
  */
-public class ViewEmployeeDocument extends HttpServlet {
+public class ViewEmployeeDocument extends BaseAuthController {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,31 +38,26 @@ public class ViewEmployeeDocument extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        EmployeeDBContext authdb = new EmployeeDBContext();
+        Employee employee = (Employee) request.getSession().getAttribute("employee");
         EDocumentDBContext edb = new EDocumentDBContext();
         int eid = Integer.parseInt(request.getParameter("eid"));
         int did = Integer.parseInt(request.getParameter("did"));
         Timestamp datetime = Timestamp.valueOf(request.getParameter("datetime"));
+        if (authdb.getPermissionForUsingDoc(employee.getRole().getRid(), did, 1)) {
 
-        byte[] pdf = edb.getContent(eid, did, datetime); // Load PDF byte[] into here
-        if (pdf != null) {
+            byte[] pdf = edb.getContent(eid, did, datetime); // Load PDF byte[] into here
+            if (pdf != null) {
 
-            response.setContentType("application/pdf");
-            OutputStream outs = response.getOutputStream();
-            outs.write(pdf);
-            outs.flush();
-            outs.close();
+                response.setContentType("application/pdf");
+                OutputStream outs = response.getOutputStream();
+                outs.write(pdf);
+                outs.flush();
+                outs.close();
 
-            // set pdf content
-//            response.setContentType("application/pdf");
-//            // if you want to download instead of opening inline
-//            // response.addHeader("Content-Disposition", "attachment; filename=" + fileName);
-//            // write the content to the output stream
-//            BufferedOutputStream fos1 = new BufferedOutputStream(
-//                    response.getOutputStream());
-//            fos1.write(pdf);
-//            fos1.flush();
-//            fos1.close();
+            }
         }
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -72,7 +70,7 @@ public class ViewEmployeeDocument extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void processGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
@@ -86,7 +84,7 @@ public class ViewEmployeeDocument extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void processPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }

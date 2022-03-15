@@ -7,6 +7,7 @@ package controller.document;
 
 import controller.BaseAuthController;
 import dal.EDocumentDBContext;
+import dal.EmployeeDBContext;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
@@ -50,7 +51,22 @@ public class UpdateEmployeeDocument extends BaseAuthController {
     @Override
     protected void processGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("../../../../view/document/updateEmployeeDocument.jsp").forward(request, response);
+        Employee employee = new Employee();
+        employee = (Employee) request.getSession().getAttribute("employee");
+        EmployeeDBContext edb = new EmployeeDBContext();
+        int did = -1;
+
+        try {
+            did = Integer.parseInt(request.getParameter("did"));
+        } catch (Exception e) {
+        }
+        if (edb.getPermissionForUsingDoc(employee.getRole().getRid(), did, 1)) {
+            request.getRequestDispatcher("../../../../view/document/updateEmployeeDocument.jsp").forward(request, response);
+
+        } else {
+            response.getWriter().println("Access denied");
+        }
+
     }
 
     /**
@@ -66,17 +82,17 @@ public class UpdateEmployeeDocument extends BaseAuthController {
             throws ServletException, IOException {
         Employee employee = new Employee();
         int eid = -1;
-        int did = 11;
+        int did = -1;
         Timestamp from = null;
         String error = "";
         EDocumentDBContext eddb = new EDocumentDBContext();
         Boolean success = false;
         employee = (Employee) request.getSession().getAttribute("employee");
         boolean upload = true;
-
         try {
             eid = Integer.parseInt(request.getParameter("eid"));
             from = Timestamp.valueOf(request.getParameter("datetime"));
+            did = eid = Integer.parseInt(request.getParameter("did"));
 
         } catch (Exception e) {
         }
@@ -102,8 +118,10 @@ public class UpdateEmployeeDocument extends BaseAuthController {
                 pdfFileBytes = filePart.getInputStream();
                 final byte[] bytes = new byte[pdfFileBytes.available()];
                 pdfFileBytes.read(bytes);  //Storing the binary data in bytes array.
-                try {if(upload)
-                    success = eddb.updateDocument(eid, did, from, bytes);
+                try {
+                    if (upload) {
+                        success = eddb.updateDocument(eid, did, from, bytes,employee.getEid());
+                    }
                 } catch (SQLException ex) {
                     Logger.getLogger(UpdateEmployeeDocument.class.getName()).log(Level.SEVERE, null, ex);
                 }

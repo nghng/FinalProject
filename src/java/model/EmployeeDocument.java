@@ -19,6 +19,7 @@ public class EmployeeDocument {
     private Timestamp datetime;
     private byte[] content;
     private Timestamp modifiedDate;
+    private int meid;
 
     public EmployeeDocument() {
     }
@@ -38,8 +39,6 @@ public class EmployeeDocument {
     public void setModifiedDate(Timestamp modifiedDate) {
         this.modifiedDate = modifiedDate;
     }
-
-    
 
     public Timestamp getDatetime() {
         return datetime;
@@ -71,6 +70,14 @@ public class EmployeeDocument {
 
     public void setContent(byte[] content) {
         this.content = content;
+    }
+
+    public int getMeid() {
+        return meid;
+    }
+
+    public void setMeid(int meid) {
+        this.meid = meid;
     }
 
 }

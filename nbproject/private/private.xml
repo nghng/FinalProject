@@ -3,9 +3,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/Documents/NetBeansProjects/FinalProject/web/view/kindergarten/detail.jsp</file>
-            <file>file:/D:/Documents/NetBeansProjects/FinalProject/web/view/document/createEmployeeDocument.jsp</file>
-            <file>file:/D:/Documents/NetBeansProjects/FinalProject/src/java/controller/document/CreateEmployeeDocument.java</file>
+            <file>file:/D:/Documents/NetBeansProjects/FinalProject/web/view/document/displayEmployeeDocument.jsp</file>
+            <file>file:/D:/Documents/NetBeansProjects/FinalProject/web/view/document/displayKindergartenDocuments.jsp</file>
             <file>file:/D:/Documents/NetBeansProjects/FinalProject/web/view/document/updateEmployeeDocument.jsp</file>
         </group>
     </open-files>

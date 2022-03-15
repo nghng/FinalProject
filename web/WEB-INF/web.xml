@@ -56,11 +56,15 @@
     <servlet>
         <servlet-name>CreateEmployeeDocument</servlet-name>
         <servlet-class>controller.document.CreateEmployeeDocument</servlet-class>
-          <multipart-config>
+        <multipart-config>
             <max-file-size>20848820</max-file-size>
             <max-request-size>418018841</max-request-size>
             <file-size-threshold>1048576</file-size-threshold>
         </multipart-config>
+    </servlet>
+    <servlet>
+        <servlet-name>DisplayKindergartenDocuments</servlet-name>
+        <servlet-class>controller.document.DisplayKindergartenDocuments</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>LoginController</servlet-name>
@@ -91,20 +95,52 @@
         <url-pattern>/kindergarten/detail/employee/doc</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>DisplayEmployeeDocument</servlet-name>
+        <url-pattern>/kindergarten/detail/personal/doc</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>ViewEmployeeDocument</servlet-name>
         <url-pattern>/kindergarten/detail/employee/doc/view</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewEmployeeDocument</servlet-name>
+        <url-pattern>/kindergarten/detail/personal/doc/view</url-pattern>
+    </servlet-mapping>
+     <servlet-mapping>
+        <servlet-name>ViewEmployeeDocument</servlet-name>
+        <url-pattern>/kindergarten/detail/general/doc/view</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>DeleteEmployeeDocument</servlet-name>
         <url-pattern>/kindergarten/detail/employee/doc/del</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>DeleteEmployeeDocument</servlet-name>
+        <url-pattern>/kindergarten/detail/personal/doc/del</url-pattern>
+    </servlet-mapping>
+     <servlet-mapping>
+        <servlet-name>DeleteEmployeeDocument</servlet-name>
+        <url-pattern>/kindergarten/detail/general/doc/del</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>UpdateEmployeeDocument</servlet-name>
         <url-pattern>/kindergarten/detail/employee/doc/update</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>UpdateEmployeeDocument</servlet-name>
+        <url-pattern>/kindergarten/detail/personal/doc/update</url-pattern>
+    </servlet-mapping>
+      <servlet-mapping>
+        <servlet-name>UpdateEmployeeDocument</servlet-name>
+        <url-pattern>/kindergarten/detail/general/doc/update</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>CreateEmployeeDocument</servlet-name>
         <url-pattern>/kindergarten/detail/create</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DisplayKindergartenDocuments</servlet-name>
+        <url-pattern>/kindergarten/detail/general/doc</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -45,6 +45,7 @@ public class DisplayEmployeeDocument extends BaseAuthController {
     @Override
     protected void processGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
         Employee employee = new Employee();
         int eid = -1;
         try {
@@ -54,16 +55,19 @@ public class DisplayEmployeeDocument extends BaseAuthController {
         int did = Integer.parseInt(this.getInitParameter("did"));
         employee = (Employee) request.getSession().getAttribute("employee");
         EmployeeDBContext edb = new EmployeeDBContext();
-        if (edb.getPermissionForUsingDoc(employee.getRole().getRid(),
-                did, 2) == false) {
-            response.getWriter().print("Bạn không thể xem tài liệu này");
-        } else {
-            EDocumentDBContext eddb = new EDocumentDBContext();
-            ArrayList<EmployeeDocument> edocs = eddb.getEDocumentByEidDid(eid, did);
-            request.setAttribute("edocs", edocs);
-            request.getRequestDispatcher("../../../view/document/displayEmployeeDocument.jsp").forward(request, response);
+//        if (edb.getPermissionForUsingDoc(employee.getRole().getRid(),
+//                did, 2) == false) {
+//            response.getWriter().print("Bạn không thể xem tài liệu này");
+//        } else {
 
-        }
+            EDocumentDBContext eddb = new EDocumentDBContext();
+            ArrayList<EmployeeDocument> edocs = eddb.getEdocsByEid(eid);
+            request.setAttribute("edocs", edocs);
+//            request.getRequestDispatcher("../../../view/document/displayEmployeeDocument.jsp").forward(request, response);
+            request.getRequestDispatcher("/view/document/displayEmployeeDocument.jsp").forward(request, response);
+               
+
+        
 
     }
 

@@ -11,7 +11,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Tạo mới hồ sơ</title>
         <link href='http://fonts.googleapis.com/css?family=Cookie' rel='stylesheet' type='text/css'>
         <link href="../../css/home/header-basic.css" rel="stylesheet" type="text/css"/>
         <link href="../../css/home/home.css" rel="stylesheet" type="text/css"/>
@@ -29,9 +29,9 @@
                 <h1><a href="#">Cổng Thông Tin<span></span></a></h1>
 
                 <nav>
-                    <a href="#">Trang chủ</a>
-                    <a href="#">Liên lạc</a>
-                    <a href="logout" >Đăng xuất</a>
+                    <a href="${pageContext.request.contextPath}/home">Trang chủ</a>
+                    <a href="mailto: hunglengoc2109@gmail.com">Liên lạc</a>
+                    <a href="${pageContext.request.contextPath}/logout" >Đăng xuất</a>
 
                 </nav>
             </div>
@@ -42,7 +42,14 @@
                 <table>
                     <tr>
                         <td> Loại tài liệu<td/>
-                        <td><select name="did" id="did"></select> <td/>
+                        <td><select name="did">
+                                <c:forEach items="${requestScope.docs}" var="d">
+                                    <option value="${d.did}">
+                                        ${d.dname}
+                                    </option>
+                                </c:forEach>
+
+                            </select> <td/>
                     <tr/>
 
                     <tr>
@@ -62,9 +69,20 @@
 
 
             </form>
+
+
         </div>
 
-
+        <div>
+            <c:if test="${requestScope.error != null}">${requestScope.error}</c:if>
+            <c:choose>
+                <c:when test="${requestScope.success}">
+                    <p>Tạo mới văn bản thành công</p>
+                    <a href="${pageContext.request.contextPath}/kindergarten/detail/personal/doc?eid=${sessionScope.employee.eid}">Xem</a>
+                </c:when>
+                <c:otherwise></c:otherwise>
+            </c:choose>
+        </div>
 
         <div class="footer" style="width: 100%;">
             <p>Liên lạc: hunglengoc2109@gmail.com</p>

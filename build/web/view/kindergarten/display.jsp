@@ -16,7 +16,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Các trường</title>
         <link href='http://fonts.googleapis.com/css?family=Cookie' rel='stylesheet' type='text/css'>
         <link href="css/home/header-basic.css" rel="stylesheet" type="text/css"/>
         <link href="css/display/display.css" rel="stylesheet" type="text/css"/>
@@ -35,8 +35,8 @@
             <h1><a href="#">Cổng Thông Tin<span></span></a></h1>
 
             <nav>
-                <a href="#">Trang chủ</a>
-                <a href="#">Liên lạc</a>
+                <a href="home">Trang chủ</a>
+                <a href="mailto: hunglengoc2109@gmail.com">Liên lạc</a>
                 <a href="logout" >Đăng xuất</a>
 
             </nav>
