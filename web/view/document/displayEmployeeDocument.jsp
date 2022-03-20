@@ -28,7 +28,14 @@
                 <h1><a href="../../../home">Cổng Thông Tin<span></span></a></h1>
 
                 <nav>
-                    <a href="${pageContext.request.contextPath}/home">Trang chủ</a>
+                     <c:choose>
+                        <c:when test="${sessionScope.employee.role.rid != 0}">
+                            <a href="${pageContext.request.contextPath}/kindergarten/detail?kid=${sessionScope.employee.kinder.kid}">Trang chủ</a>
+                        </c:when>
+                        <c:otherwise>
+                            <a href="${pageContext.request.contextPath}/home">Trang chủ</a>
+                        </c:otherwise>
+                    </c:choose>
                     <a href="mailto: hunglengoc2109@gmail.com">Liên lạc</a>
                     <a href="${pageContext.request.contextPath}/logout" >Đăng xuất</a>
 

@@ -43,7 +43,12 @@ public class LoginController extends HttpServlet {
             throws ServletException, IOException {
         Employee e = (Employee) request.getSession().getAttribute("employee");
         if (e != null) {
-            request.getRequestDispatcher("view/home.jsp").forward(request, response);
+            if (e.getRole().getRid() != 0) {
+                request.getRequestDispatcher("kindergarten/detail?kid=" + e.getKinder().getKid()).forward(request, response);
+            } else {
+                request.getRequestDispatcher("home" + e.getKinder().getKid()).forward(request, response);
+
+            }
 
         }
         request.getRequestDispatcher("view/login.jsp").forward(request, response);
@@ -63,9 +68,9 @@ public class LoginController extends HttpServlet {
             throws ServletException, IOException {
         int eid = -1;
         try {
-             eid = Integer.parseInt(request.getParameter("eid"));
+            eid = Integer.parseInt(request.getParameter("eid"));
         } catch (Exception e) {
-           
+
         }
         String password = request.getParameter("password");
         EmployeeDBContext db = new EmployeeDBContext();
@@ -78,7 +83,12 @@ public class LoginController extends HttpServlet {
         } else {
             request.getSession().setAttribute("employee", employee);
             request.getSession().setAttribute("isLogin", "0");
-            response.sendRedirect("home");
+            if (employee.getRole().getRid() != 0) {
+                response.sendRedirect("kindergarten/detail?kid=" + employee.getKinder().getKid());
+            } else {
+                response.sendRedirect("home");
+
+            }
 
         }
     }

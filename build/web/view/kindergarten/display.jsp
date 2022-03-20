@@ -22,7 +22,7 @@
         <link href="css/display/display.css" rel="stylesheet" type="text/css"/>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
         <script src="js/kindergarten/kindergarten.js" type="text/javascript"></script>
-     
+
         <%
             Integer pageindex = (Integer) request.getAttribute("pageindex");
             Integer totalpage = (Integer) request.getAttribute("totalpage");
@@ -35,7 +35,14 @@
             <h1><a href="#">Cổng Thông Tin<span></span></a></h1>
 
             <nav>
-                <a href="home">Trang chủ</a>
+                <c:choose>
+                    <c:when test="${sessionScope.employee.role.rid != 0}">
+                        <a href="${pageContext.request.contextPath}/kindergarten/detail?kid=${sessionScope.employee.kinder.kid}">Trang chủ</a>
+                    </c:when>
+                    <c:otherwise>
+                        <a href="${pageContext.request.contextPath}/home">Trang chủ</a>
+                    </c:otherwise>
+                </c:choose>
                 <a href="mailto: hunglengoc2109@gmail.com">Liên lạc</a>
                 <a href="logout" >Đăng xuất</a>
 

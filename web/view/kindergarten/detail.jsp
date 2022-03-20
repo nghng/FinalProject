@@ -29,7 +29,14 @@
                 <h1><a href="#">Cổng Thông Tin<span></span></a></h1>
 
                 <nav>
-                    <a href="../home">Trang chủ</a>
+                    <c:choose>
+                        <c:when test="${sessionScope.employee.role.rid != 0}">
+                            <a href="${pageContext.request.contextPath}/kindergarten/detail?kid=${sessionScope.employee.kinder.kid}">Trang chủ</a>
+                        </c:when>
+                        <c:otherwise>
+                            <a href="${pageContext.request.contextPath}/home">Trang chủ</a>
+                        </c:otherwise>
+                    </c:choose>
                     <a href="mailto: hunglengoc2109@gmail.com">Liên lạc</a>
                     <a href="../logout" >Đăng xuất</a>
 
@@ -41,15 +48,15 @@
         <c:set var="e" scope="session" value="${sessionScope.employee}"/>
         <div>
             <p><c:choose>
-                    <c:when test="${e.eid != 0 and e.gender}">Xin chào thầy ${e.fullname}</c:when>
-                    <c:when test="${e.eid != 0 and e.gender == false}">Xin chào cô ${e.fullname}</c:when>
+                    <c:when test="${e.role.rid != 0 and e.gender}">Xin chào thầy ${e.fullname}</c:when>
+                    <c:when test="${e.role.rid != 0 and e.gender == false}">Xin chào cô ${e.fullname}</c:when>
                     <c:otherwise>Xin chào cán bộ ${e.fullname}</c:otherwise>
 
                 </c:choose>
             </p>
         </div>
 
-        <div>
+        <div id="generalLink">
             <p>Trường mầm non ${requestScope.kindergarten.kname}</p>
             <a href="detail/general/doc?kid=${requestScope.kindergarten.kid}">Tra cứu hồ sơ của trường</a></br>
             <a href="detail/employee">Tra cứu nhân viên của trường</a></br>

@@ -133,8 +133,8 @@ body{
 }
 .footer{
     display: block;
- 
     width: 100%;
+    bottom: 0;
     background-color: #8eb6dd;
     width: 200px;
     height: 100px;
@@ -143,6 +143,28 @@ body{
 }
 .footer p{
    padding-top: 50px;
+}
+
+#containerbot{
+    margin-top:50px;
+    text-align: center;
+    
+}
+#containerbot a{
+    padding: 5px;
+    
+}
+
+#generalLink{
+    margin-bottom: 200px;
+   
+}
+
+#createForm{
+    margin-top: 200px;
+    margin-bottom: 200px;
+    border: 1px solid;
+    
 }
 
 @media (max-width:767px)

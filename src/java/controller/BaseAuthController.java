@@ -50,7 +50,7 @@ public abstract class BaseAuthController extends HttpServlet {
         if (isAuthenticated(request)) {
             processGet(request, response);
         } else {
-            response.getWriter().println("Bạn không có quyền truy cập");
+             response.sendRedirect(request.getContextPath() + "/view/failed.jsp");
 
         }
     }
@@ -76,7 +76,7 @@ public abstract class BaseAuthController extends HttpServlet {
             //business
             processPost(request, response);
         } else {
-            response.getWriter().println("Bạn không có quyền truy cập");
+            response.sendRedirect(request.getContextPath() + "/view/failed.jsp");
 
         }
     }

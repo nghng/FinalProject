@@ -82,6 +82,9 @@ public class DisplayKindergartenDocuments extends BaseAuthController {
         }
         int pageindex = Integer.parseInt(page);
         int kid = employee.getKinder().getKid();
+        if(kid == 0){
+            kid = Integer.parseInt(request.getParameter("kid"));
+        }
 
         roles = rdb.getRoles();
 

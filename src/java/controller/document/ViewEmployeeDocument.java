@@ -44,7 +44,7 @@ public class ViewEmployeeDocument extends BaseAuthController {
         int eid = Integer.parseInt(request.getParameter("eid"));
         int did = Integer.parseInt(request.getParameter("did"));
         Timestamp datetime = Timestamp.valueOf(request.getParameter("datetime"));
-        if (authdb.getPermissionForUsingDoc(employee.getRole().getRid(), did, 1)) {
+        if (authdb.getPermissionForUsingDoc(employee.getRole().getRid(), did, 2)) {
 
             byte[] pdf = edb.getContent(eid, did, datetime); // Load PDF byte[] into here
             if (pdf != null) {
