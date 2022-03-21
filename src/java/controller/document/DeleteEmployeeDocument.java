@@ -63,7 +63,7 @@ public class DeleteEmployeeDocument extends BaseAuthController {
         EmployeeDBContext edb = new EmployeeDBContext();
         if (edb.getPermissionForUsingDoc(employee.getRole().getRid(),
                 did, 1) == false) {
-            response.getWriter().print("Bạn không thể xóa tài liệu này");
+            response.sendRedirect(request.getContextPath() + "/view/failedEdit.jsp");
         } else {
             EDocumentDBContext eddb = new EDocumentDBContext();
             try {

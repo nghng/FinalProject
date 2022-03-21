@@ -64,7 +64,7 @@ public class UpdateEmployeeDocument extends BaseAuthController {
             request.getRequestDispatcher("../../../../view/document/updateEmployeeDocument.jsp").forward(request, response);
 
         } else {
-            response.getWriter().println("Access denied");
+            response.sendRedirect(request.getContextPath() + "/view/failedEdit.jsp");
         }
 
     }
@@ -92,13 +92,11 @@ public class UpdateEmployeeDocument extends BaseAuthController {
         try {
             eid = Integer.parseInt(request.getParameter("eid"));
             from = Timestamp.valueOf(request.getParameter("datetime"));
-            did = eid = Integer.parseInt(request.getParameter("did"));
+            did = Integer.parseInt(request.getParameter("did"));
 
         } catch (Exception e) {
         }
-        if (eid != employee.getEid()) {
-            response.getWriter().println("Access denied");
-        } else {
+       
             response.setContentType("text/html;charset=UTF-8");
             final Part filePart = request.getPart("file");
             InputStream pdfFileBytes = null;
@@ -134,7 +132,7 @@ public class UpdateEmployeeDocument extends BaseAuthController {
             request.setAttribute("success", success);
             request.getRequestDispatcher("../../../../view/document/updateEmployeeDocument.jsp").forward(request, response);
 
-        }
+        
     }
 
     /**

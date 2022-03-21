@@ -56,6 +56,8 @@ public class ViewEmployeeDocument extends BaseAuthController {
                 outs.close();
 
             }
+        }else{
+              response.sendRedirect(request.getContextPath() + "/view/failedEdit.jsp");
         }
 
     }
